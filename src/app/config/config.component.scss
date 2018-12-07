@@ -1,0 +1,57 @@
+$full-height: 500px;
+$fh-plus-one: 501px;
+$main-height: 470px;
+$button-height: 30px;
+
+.config {
+    position: fixed;
+    height: $full-height;
+    box-shadow: 5px solid #7f7f7f;
+    width: 98vw;
+    margin-top: -517px;
+    left: 1vw;
+    box-sizing: border-box;
+    padding: 0;
+    z-index: 10000;
+
+    transition: margin-top 0.5s ease-in-out;
+
+    &.open {
+        margin-top: -47px;
+
+        .options {
+            padding: 2em;
+        }
+    }
+
+    .options {
+        border: 1px solid #777;
+        border-top: none;
+        background-color: white;
+        height: $main-height;
+        margin: 0;
+        padding: 0;
+
+        .form-control {
+            border-radius: 0;
+            border:none;
+            border-bottom: 1px solid #aaa;
+            box-shadow: none;
+            padding: 20px 0 30px 0;
+        }
+    }
+
+    .toggle {
+        background-color: #777;
+        border-radius: 0 0 0.25rem 0.25rem;
+        box-sizing: border-box;
+        cursor: pointer;
+        line-height: 1em;
+        margin: 0;
+        width: 50px;
+        height: $button-height;
+        font-size: 1.7em;
+        color: white;
+        text-align: center;
+    }
+}

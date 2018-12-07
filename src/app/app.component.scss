@@ -1,0 +1,32 @@
+$outdent: 0.25em;
+
+.btn {
+    border: 1px solid #ccc;
+}
+
+.main {
+    margin-top: 3em;
+    height: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .sidebar {
+        border-right: 1px solid #aaa;
+        height: 100%;
+        min-height: 100%;
+        box-sizing: border-box;
+
+        .campaign {
+            padding: 0.25em;
+            box-sizing: border-box;
+            border-bottom: 1px solid #eeee;
+            // text-indent: -$outdent;
+            // margin-left: $outdent;
+        }
+    }
+
+    .content {
+        box-sizing: border-box;
+    }
+}

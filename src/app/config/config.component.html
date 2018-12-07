@@ -1,0 +1,20 @@
+<div class="config" [ngClass]="{'open': open}">
+  <div class="options">
+
+    <div class="form-control">
+      <og-file [campaigns]='data.campaigns'
+               (import)='onImport($event)'
+               (save)='onSave()'></og-file>
+    </div>
+
+    <div class="form-control">
+      <og-toggle 
+        *ngIf='data && data.config'
+        [(ngModel)]='data.config.autosave' label='Autosave' (change)='onAutosaveChange()' round='true'></og-toggle>
+    </div>
+
+  </div>
+  <div class="toggle" (click)="toggle()">
+    <i class="fas fa-cog"></i>
+  </div>
+</div>

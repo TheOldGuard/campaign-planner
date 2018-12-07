@@ -1,0 +1,14 @@
+<h3
+    contenteditable="true"
+    [(ngModel)]="campaign.name"
+    (focus)='onFieldFocus("name")'
+    (blur)='onFieldBlur("name")'
+    >
+></h3>
+<p
+  contenteditable="true"
+  [(ngModel)]='campaign.description'
+  (focus)='onFieldFocus("description")'
+  (blur)='onFieldBlur("description")'
+  [ngClass]="{'default':isDefault('description')}"
+></p>

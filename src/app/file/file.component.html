@@ -1,0 +1,9 @@
+<div class="file-container">
+  <label>Data Import/Export</label>
+  <div class="button-container">
+    <og-export [campaigns]="campaigns"></og-export>
+    <og-import (import)="onImport($event)"></og-import>
+    |
+    <button class='btn btn-success' (click)='emitSave()'>Save now</button>
+  </div>
+</div>

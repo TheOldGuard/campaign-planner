@@ -1,0 +1,43 @@
+/* MODAL STYLES
+-------------------------------*/
+.og-modal {
+    /* modal container fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    /* z-index must be higher than .og-modal-background */
+    z-index: 1000;
+        
+    /* enables scrolling for tall modals */
+    overflow: auto;
+
+    .og-modal-body {
+        padding: 20px;
+        background: #fff;
+        border-radius: 0.5em;
+
+        /* margin exposes part of the modal background */
+        margin: 10vw;
+
+    }
+}
+
+.og-modal-background {
+    /* modal background fixed across whole screen */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    /* semi-transparent black  */
+    background-color: #000;
+    opacity: 0.75;
+        
+    /* z-index must be below .og-modal and above everything else  */
+    z-index: 900;
+}
+ 

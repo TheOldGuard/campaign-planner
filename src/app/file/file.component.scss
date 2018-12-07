@@ -1,0 +1,18 @@
+.file-container {
+    position: relative;
+
+    .button-container {
+        position: absolute;
+        right: 0;
+        bottom: 9px;
+
+        .btn {
+            padding: 0.15rem 0.37rem;
+        }
+
+        * {
+            margin: 5px;
+        }
+    }
+
+}
