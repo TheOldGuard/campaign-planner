@@ -69,3 +69,7 @@ label {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.disabled .slider{
+  cursor: not-allowed;
+}

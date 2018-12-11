@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { instanceOfX, dedupe } from './util';
-
 import { Character } from './models/character.model';
 import { Portent }  from './models/portent.model';
 import { Danger } from './models/danger.model';
 import { Front } from './models/front.model';
 import { Campaign } from './models/campaign.model';
 import { IStorable, ICampaign } from './models/interfaces.model';
+import { PersistenceException } from './models/exceptions/persistence-exception.error';
 
 const PREFIX = 'og_planner';
 
@@ -19,9 +18,9 @@ let debug = false;
 export class DataService {
 
   constructor() {
-    if(debug) {
-      debugService.call(this);
-    }
+    // if(debug) {
+    //   debugService.call(this);
+    // }
   }
 
   getStorable(thing: any): IStorable {
@@ -44,28 +43,55 @@ export class DataService {
     return PREFIX + '_' + key;
   }
 
-  save(campaigns: ICampaign[]) {
-    localStorage.setItem(PREFIX + '_' + 'lastSaved', JSON.stringify(new Date()));
+  save(campaigns: ICampaign[], interval: number, currentAppId: string, testrun?: boolean) {
+    let shouldPersist = !testrun;
+    
+    let lastSaved, appId;
+    if (!testrun) { //only do mutex protection if we're not doing a test run
+      let fetchedLastSaved = localStorage.getItem(PREFIX + '_' + 'lastSaved');
+      let fetchedAppId = localStorage.getItem(PREFIX + '_' + 'appId');
+
+      if (fetchedLastSaved) {
+        lastSaved = JSON.parse(fetchedLastSaved);
+      }
+      if (fetchedAppId) {
+        appId = fetchedAppId;
+      }
+      if (lastSaved && appId) {
+        let elapsed = new Date().getTime() - new Date(lastSaved).getTime();
+        if (elapsed < interval) {
+          console.log('last saved less than ' + (interval/1000) + ' seconds ago. Verifying appid.');
+          if (appId && appId !== currentAppId) {
+            throw new PersistenceException('Duplicate Instance Detected','There is an instance of this app running in another tab or window.');
+          }
+        }
+      }
+    }
 
     let campaignsSerialized = campaigns.map(c => c.serialize());
     let campaignJSON = JSON.stringify([].concat(...campaignsSerialized.map(c => c.data)));
-    localStorage.setItem(this.buildKey(Campaign),campaignJSON);
 
     let frontsSerialized = [].concat(...campaignsSerialized.map(c => c.fronts));
     let frontJSON = JSON.stringify(frontsSerialized.map(f => JSON.stringify(f)));
-    localStorage.setItem(this.buildKey(Front), frontJSON);
 
     let dangersSerialized = [].concat(...campaignsSerialized.map(c => c.dangers));
     let dangerJSON = JSON.stringify(dangersSerialized.map(d => JSON.stringify(d)));
-    localStorage.setItem(this.buildKey(Danger), dangerJSON);
 
     let portentsSerialized = [].concat(...campaignsSerialized.map(c => c.portents));
     let portentJSON = JSON.stringify(portentsSerialized.map(p => JSON.stringify(p)));
-    localStorage.setItem(this.buildKey(Portent), portentJSON);
 
     let charactersSerialized = [].concat(...campaignsSerialized.map(c => c.cast));
     let characterJSON = JSON.stringify(charactersSerialized.map(c => JSON.stringify(c)));
-    localStorage.setItem(this.buildKey(Character), characterJSON);
+
+    if (shouldPersist) {
+      localStorage.setItem(PREFIX + '_' + 'lastSaved', JSON.stringify(new Date()));
+      localStorage.setItem(PREFIX + '_' + 'appId', currentAppId);
+      localStorage.setItem(this.buildKey(Campaign),campaignJSON);
+      localStorage.setItem(this.buildKey(Front), frontJSON);
+      localStorage.setItem(this.buildKey(Danger), dangerJSON);
+      localStorage.setItem(this.buildKey(Portent), portentJSON);
+      localStorage.setItem(this.buildKey(Character), characterJSON);
+    }
 
     return {
       campaigns: campaignJSON,
@@ -89,7 +115,7 @@ export class DataService {
   }
 
   export(campaigns: ICampaign[]): string {
-    let saved = this.save(campaigns);
+    let saved = this.save(campaigns, 30000, 'blah', true);
     return JSON.stringify(saved);
   }
 

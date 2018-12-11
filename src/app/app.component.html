@@ -19,3 +19,7 @@
     </div>
   </div>
 </div>
+<og-modal id="persistence-error" header="{{persistenceException ? persistenceException.title : ''}}">
+  <p>{{ persistenceException ? persistenceException.message : '' }}</p>
+  <p>Auto-save has been disabled. If you wish to save the data in this instance, you will need to export it (click the gear icon in the top left).</p>
+</og-modal>

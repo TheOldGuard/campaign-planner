@@ -22,6 +22,8 @@ export class ToggleComponent implements ControlValueAccessor {
   @Input()
   label: string;
 
+  @Input() locked: boolean = false;
+
   id: string;
 
   @Input() round: boolean = false;
@@ -31,8 +33,11 @@ export class ToggleComponent implements ControlValueAccessor {
   }
 
   set value(val: boolean) {
-    this._value = !!val;
-    this.propagateChange(this._value);
+    console.log('new value!',val);
+    if (!this.locked) {
+      this._value = !!val;
+      this.propagateChange(this._value);
+    }
   }
 
   constructor() {
@@ -42,7 +47,9 @@ export class ToggleComponent implements ControlValueAccessor {
   propagateChange = (_: any) => {}
 
   writeValue(value: boolean) {
-    this.value = !!value; // coerce to boolean
+    if (!this.locked) {
+      this.value = !!value; // coerce to boolean
+    }
   }
 
   registerOnChange(fn) {

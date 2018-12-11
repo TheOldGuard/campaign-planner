@@ -28,10 +28,15 @@ export class ConfigComponent {
 
   toggle() {
     this.modalService.open('config-modal');
+    this.open = true;
   }
 
   closeModal() {
     this.modalService.close('config-modal');
+  }
+
+  onModalClose() {
+    this.open = false;
   }
 
   onAutosaveChange() {
