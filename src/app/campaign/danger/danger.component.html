@@ -131,8 +131,7 @@
 
       <!-- danger portents -->
       <div class="portents">
-        <h5 *ngIf='!danger.portents || !danger.portents.length'>No portents yet!</h5>
-        <div class="portents-list" *ngIf='danger.portents && danger.portents.length'>
+        <div class="portents-list" *ngIf='danger.portents'>
           <og-portent-list [portents]='danger.portents'></og-portent-list>
         </div>
       </div>

@@ -1,6 +1,9 @@
 <h6>Grim Portents</h6>
 <i class="fas edit-toggle" (click)='toggleEdit()' [ngClass]="isEditing ? 'fa-lock-open' : 'fa-lock'"></i>
 <ul class='portent-list' *ngIf='!isModifying'>
+  <li *ngIf='!portents || !portents.length'>
+    <h6>There are no grim portents yet. Unlock this section to add some!</h6>
+  </li>
   <li *ngFor='let portent of portents' [ngClass]="{'passed': portent.passed, 'editing': isEditing}">
     <input type="checkbox" [(ngModel)]='portent.passed'/>
     <p class="label editable" *ngIf='!isEditing'>{{portent.label}}</p>
