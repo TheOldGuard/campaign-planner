@@ -12,10 +12,10 @@ export class ImportComponent {
   @ViewChild('file') file;
 
   @Output('import')
-  private importEmitter: EventEmitter<ICampaign[]> = new EventEmitter();
+  importEmitter: EventEmitter<ICampaign[]> = new EventEmitter();
 
   @Output('error')
-  private errorEmitter: EventEmitter<string> = new EventEmitter();
+  errorEmitter: EventEmitter<string> = new EventEmitter();
 
   constructor(private dataService: DataService) { }
 

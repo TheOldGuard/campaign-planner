@@ -10,14 +10,14 @@ import { Character } from 'src/app/models/character.model';
 export class CharacterComponent implements OnInit, OnDestroy {
 
   @Input()
-  private character: ICharacter;
+  character: ICharacter;
 
-  private isOpen: boolean = false;
-  private isEditing: boolean = false;
+  isOpen: boolean = false;
+  isEditing: boolean = false;
 
   @ViewChild('panel')
-  private panel: ElementRef;
-  private heightFixer: number;
+  panel: ElementRef;
+  heightFixer: number;
 
   constructor() { }
 

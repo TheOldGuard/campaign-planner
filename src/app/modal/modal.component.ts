@@ -14,13 +14,13 @@ import { ModalService } from './modal.service';
  
 export class ModalComponent implements OnInit, OnDestroy {
     @Input() header: string;
-    private showClose:boolean = true;
+    showClose:boolean = true;
 
     @Input() id: string;
-    private element: any;
+    element: any;
 
     @Output('close')
-    private closeEmitter: EventEmitter<any> = new EventEmitter();
+    closeEmitter: EventEmitter<any> = new EventEmitter();
  
     constructor(private modalService: ModalService, private el: ElementRef) {
         this.element = el.nativeElement;

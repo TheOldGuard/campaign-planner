@@ -10,7 +10,7 @@ import { DataService } from 'src/app/data.service';
 export class ExportComponent {
 
   @Input('campaigns')
-  private campaigns: ICampaign[];
+  campaigns: ICampaign[];
 
   constructor(private dataService: DataService) { }
 

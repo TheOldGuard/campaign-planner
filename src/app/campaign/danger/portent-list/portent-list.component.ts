@@ -11,9 +11,9 @@ import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
 export class PortentListComponent {
 
   @Input()
-  private portents: IPortent[];
+  portents: IPortent[];
 
-  private isModifying: boolean = false;
+  isModifying: boolean = false;
 
   isEditing: boolean = false;
 

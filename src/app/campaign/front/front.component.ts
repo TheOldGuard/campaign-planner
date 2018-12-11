@@ -17,27 +17,27 @@ import { Subscription } from 'rxjs';
 export class FrontComponent implements OnInit, OnDestroy{
 
   @Input()
-  private front: IFront;
+  front: IFront;
 
   @Input()
-  private dangers: IDanger[];
+  dangers: IDanger[];
 
   @Input()
-  private characters: ICharacter[];
+  characters: ICharacter[];
 
   @ViewChild('panel')
-  private panel: ElementRef;
+  panel: ElementRef;
 
-  private selectedDangerToAdd: number;
-  private dangerToRemove: IDanger;
+  selectedDangerToAdd: number;
+  dangerToRemove: IDanger;
 
-  private subscription: Subscription;
+  subscription: Subscription;
 
-  private isEditing: boolean = false;
-  private isModifying: boolean = false;
+  isEditing: boolean = false;
+  isModifying: boolean = false;
 
-  private isOpen: boolean = false;
-  private heightFixer: number;
+  isOpen: boolean = false;
+  heightFixer: number;
 
   constructor(private modalService: ModalService, private dataChangeService: EntityDataChangeService) { }
 

@@ -10,13 +10,13 @@ import { Subscription } from 'rxjs';
 export class FileComponent implements OnInit, OnDestroy {
 
   @Input('campaigns')
-  private campaigns: ICampaign[];
+  campaigns: ICampaign[];
 
   @Output('import')
-  private emitter: EventEmitter<ICampaign[]> = new EventEmitter();
+  emitter: EventEmitter<ICampaign[]> = new EventEmitter();
 
   @Output('save')
-  private saveEmitter: EventEmitter<any> = new EventEmitter();
+  saveEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 

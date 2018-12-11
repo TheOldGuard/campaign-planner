@@ -9,7 +9,7 @@
     </h5>
   </div>
 
-  <div id="content-{{danger.uuid}}" class="panel" #panel [ngClass]="{'collapsing':isCollapsing,'show':isOpen}">
+  <div id="content-{{danger.uuid}}" class="panel" #panel [ngClass]="{'show':isOpen}">
     <div class="card-body">
       <i class="fas edit-lock" (click)='toggleEditing()' [ngClass]="{'fa-lock':!isEditing,'fa-lock-open':isEditing}"></i>
 
@@ -132,7 +132,7 @@
       <!-- danger portents -->
       <div class="portents">
         <h5 *ngIf='!danger.portents || !danger.portents.length'>No portents yet!</h5>
-        <div class="portents-list" *ngIf='danger.portents && danger.portents.length && !isModifying'>
+        <div class="portents-list" *ngIf='danger.portents && danger.portents.length'>
           <og-portent-list [portents]='danger.portents'></og-portent-list>
         </div>
       </div>

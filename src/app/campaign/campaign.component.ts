@@ -19,19 +19,19 @@ import { Subscription } from 'rxjs';
 export class CampaignComponent implements OnInit, OnDestroy {
 
   @Input()
-  private campaign: ICampaign;
+  campaign: ICampaign;
 
   // private currentTab = 'fronts';
-  private currentTab = 'fronts';
-  private isEditing: boolean = false;
+  currentTab = 'fronts';
+  isEditing: boolean = false;
 
-  private subscription: Subscription ;
+  subscription: Subscription ;
 
-  private disableDrag: boolean = true;
+  disableDrag: boolean = true;
 
-  private deletingFront: IFront;
-  private deletingCharacter: ICharacter;
-  private deletingDanger: IDanger;
+  deletingFront: IFront;
+  deletingCharacter: ICharacter;
+  deletingDanger: IDanger;
 
   constructor(private modalService: ModalService, private dataChangeService: EntityDataChangeService) { }
 

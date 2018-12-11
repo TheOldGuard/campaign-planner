@@ -16,27 +16,27 @@ import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
 export class DangerComponent implements OnInit, OnDestroy {
 
   @Input()
-  private danger: IDanger;
+  danger: IDanger;
 
   @Input()
-  private characters: ICharacter[];
+  characters: ICharacter[];
 
   @Input('active')
-  private isOpen: boolean = false;
+  isOpen: boolean = false;
 
   @ViewChild('panel')
-  private panel: ElementRef;
+  panel: ElementRef;
 
-  private subscription: Subscription;
+  subscription: Subscription;
 
-  private isEditing: boolean = false;
-  private heightFixer: number;
+  isEditing: boolean = false;
+  heightFixer: number;
 
-  private selectedCharacterToAdd: number;
-  private characterToRemove: ICharacter;
+  selectedCharacterToAdd: number;
+  characterToRemove: ICharacter;
 
-  private isModifyingPortents: boolean = false;
-  private isModifyingCharacters: boolean = false;
+  isModifyingPortents: boolean = false;
+  isModifyingCharacters: boolean = false;
 
   constructor(private modalService: ModalService, private dataChangeService: EntityDataChangeService) { }
 

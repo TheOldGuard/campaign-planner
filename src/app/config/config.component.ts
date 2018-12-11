@@ -14,13 +14,13 @@ export class ConfigComponent {
   data: any;
 
   @Output('autosave')
-  private emitAutosave: EventEmitter<boolean> = new EventEmitter();
+  emitAutosave: EventEmitter<boolean> = new EventEmitter();
 
   @Output('import')
-  private emitImport: EventEmitter<ICampaign[]> = new EventEmitter();
+  emitImport: EventEmitter<ICampaign[]> = new EventEmitter();
 
   @Output('save')
-  private emitSave: EventEmitter<any> = new EventEmitter();
+  emitSave: EventEmitter<any> = new EventEmitter();
 
   open: boolean = false;
 
