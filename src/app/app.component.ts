@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   data: AppData = {
     campaigns: [],
     config: {
-      autosave: false
+      autosave: true
     }
   };
 
@@ -34,10 +34,8 @@ export class AppComponent implements OnInit {
 
   constructor(private dataService: DataService, private modalService: ModalService) {
     this.data.campaigns = this.dataService.load();
-    this.data.config.autosave = this.dataService.getValue('autosave');
-
-    // TEMPORARY
-    this.selectedCampaign = this.data.campaigns[0];
+    let autosave = this.dataService.getValue('og_planner_autosave');
+    this.data.config.autosave = autosave !== undefined ? autosave : this.data.config.autosave;
   }
 
   selectCampaign(campaign: ICampaign) {
@@ -67,6 +65,6 @@ export class AppComponent implements OnInit {
   }
 
   onAutosaveChange() {
-    this.dataService.setValue('autosave',this.data.config.autosave);
+    this.dataService.setValue('og_planner_autosave',this.data.config.autosave);
   }
 }
