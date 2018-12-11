@@ -59,8 +59,9 @@ export class DataService {
       }
       if (lastSaved && appId) {
         let elapsed = new Date().getTime() - new Date(lastSaved).getTime();
-        if (elapsed < interval) {
+        if (elapsed < interval - 50) { // give us a little leeway
           console.log('last saved less than ' + (interval/1000) + ' seconds ago. Verifying appid.');
+          console.log('elapsed:',elapsed,'expected:',interval+500);
           if (appId && appId !== currentAppId) {
             throw new PersistenceException('Duplicate Instance Detected','There is an instance of this app running in another tab or window.');
           }
@@ -68,7 +69,7 @@ export class DataService {
       }
     }
 
-    let campaignsSerialized = campaigns.map(c => c.serialize());
+    let campaignsSerialized = campaigns.map(c => Campaign.serialize(c));
     let campaignJSON = JSON.stringify([].concat(...campaignsSerialized.map(c => c.data)));
 
     let frontsSerialized = [].concat(...campaignsSerialized.map(c => c.fronts));

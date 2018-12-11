@@ -16,8 +16,8 @@ interface AppData {
   }
 }
 
-// const INTERVAL = 30000; // autosave interval - 30 seconds
-const INTERVAL = 10000; // autosave interval - 30 seconds
+const INTERVAL = 30000; // autosave interval - 30 seconds
+// const INTERVAL = 3000; // autosave interval - 30 seconds
 
 @Component({
   selector: 'app-root',
@@ -65,6 +65,9 @@ export class AppComponent implements OnInit {
     try {
       this.dataService.save(this.data.campaigns, INTERVAL, this.uuid);
     } catch (e) {
+      if (e.name !== 'PersistenceException') {
+        console.error((<Error>e).stack);
+      }
       if (!this.persistenceException) {
         this.persistenceException = e;
         this.modalService.open('persistence-error');

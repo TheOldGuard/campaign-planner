@@ -2,6 +2,8 @@ import { Component, Input } from '@angular/core';
 import { IPortent } from 'src/app/models/interfaces.model';
 import { Portent } from 'src/app/models/portent.model';
 import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
+import { UuidService as uuid } from 'src/app/uuid.service';
+import { ModalService } from 'src/app/modal/modal.service';
 
 @Component({
   selector: 'og-portent-list',
@@ -13,11 +15,15 @@ export class PortentListComponent {
   @Input()
   portents: IPortent[];
 
+  uuid = uuid.fast();
+
   isModifying: boolean = false;
 
   isEditing: boolean = false;
 
-  constructor() { }
+  portentToDelete: IPortent;
+
+  constructor(private modalService: ModalService) { }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
@@ -45,9 +51,27 @@ export class PortentListComponent {
     }
   }
 
+  buildModalId() {
+    return 'portent-delete-' + this.uuid;
+  }
+
   onDeletePortent(portent: IPortent) {
-    let i = this.portents.indexOf(portent);
-    this.portents.splice(i,1);
+    this.portentToDelete = portent;
+    this.modalService.open(this.buildModalId());
+  }
+
+  onDeletePortentCancel() {
+    this.portentToDelete = undefined;
+    this.modalService.close(this.buildModalId());
+  }
+
+  onDeletePortentConfirm() {
+    this.portents = this.portents.filter(p => p !== this.portentToDelete);
+    this.onDeletePortentCancel();
+  }
+
+  onDeletePortentClose() {
+    this.portentToDelete = undefined;
   }
 
   // ---------- DRAG AND DROP HANDLERS --------------

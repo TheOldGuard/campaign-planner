@@ -45,6 +45,13 @@
       <i class="fas fa-trash-alt delete-button" (click)='onDeletePortent(portent)'></i>
     </li>
 </ul>
+<og-modal id="portent-delete-{{uuid}}" header="Delete portent - {{ portentToDelete ? portentToDelete.label : ''}}" (close)="onDeletePortentClose()">
+  Are you sure you want to delete this portent? There is no going back!
+  <div class="footer right">
+    <button class="btn btn-success" (click)="onDeletePortentCancel()">Cancel</button>
+    <button class="btn btn-danger" (click)="onDeletePortentConfirm()">Yes</button>
+  </div>
+</og-modal>
 
 <div class="portent-controls" *ngIf='isEditing'>
   <button class="btn btn-success" (click)='addPortent()'>Add</button>

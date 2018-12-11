@@ -5,6 +5,7 @@ import { staticImplements } from '../decorators/staticImplements.decorator';
 import { IFront, IFrontData, IFrontSerialized, IFrontStatic, IDanger, ICharacter, IPortent } from './interfaces.model';
 import { IDangerSerialized } from './interfaces.model';
 import { dedupe } from '../util';
+import { Danger } from './danger.model';
 
 const DEFAULTS: IFrontData = {
     name: 'New Front',
@@ -41,8 +42,7 @@ export class Front implements IFront{
 
     serialize(): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[]} {
         let serializedDangers = this.dangers.map(d => {
-            let serialized = d.serialize();
-            console.log('serialized dangers:',serialized);
+            let serialized = Danger.serialize(d);
             return serialized;
         });
         let dangers: IDangerSerialized[] = serializedDangers.map(d => d.data);
@@ -72,6 +72,11 @@ export class Front implements IFront{
         let deserialized: IFrontData = <IFrontData>{...data, dangers: dangers};
         front.set(deserialized);
         return front;
+    }
+
+    static serialize(front: IFront) {
+        let fr = new Front(front.uuid).set({...<IFrontData>front});
+        return fr.serialize();
     }
 
     static defaults(): IFrontData {

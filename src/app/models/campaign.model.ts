@@ -5,6 +5,7 @@ import { staticImplements } from '../decorators/staticImplements.decorator';
 import { ICampaign, ICampaignData, ICampaignStatic, ICampaignSerialized, IFront, IFrontSerialized, IDanger, ICharacter, IPortent } from './interfaces.model';
 import { IDangerSerialized } from './interfaces.model';
 import { dedupe } from '../util';
+import { Front } from './front.model';
 
 const DEFAULTS = {
     name: 'New Campaign',
@@ -42,8 +43,13 @@ export class Campaign implements ICampaign{
         return this;
     }
 
+    static serialize(campaign: ICampaign) {
+        let camp = new Campaign(campaign.uuid).set({...<ICampaignData>campaign});
+        return camp.serialize();
+    }
+
     serialize(): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[]} {
-        let serializedFronts = this.fronts.map(f => f.serialize());
+        let serializedFronts = this.fronts.map(f => Front.serialize(f));
         let fronts = serializedFronts.map(f => f.data);
         let serializedDangers: IDangerSerialized[] = [].concat(...serializedFronts.map(f => f.dangers),this.dangers.map(d => d.serialize().data));
         let dangers = dedupe(serializedDangers);

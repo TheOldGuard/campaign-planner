@@ -59,6 +59,7 @@ export interface IDangerData extends IArchivable {
 
 export interface IDangerStatic extends IStorable {
     new(): IDanger;
+    serialize(danger: IDanger): {data: IDangerSerialized, cast: ICharacter[], portents: IPortent[]}
     deserialize(data: string, cast: ICharacter[], portents: IPortent[]): IDanger;
 }
 
@@ -88,6 +89,7 @@ export interface IFrontData extends IArchivable {
 
 export interface IFrontStatic extends IStorable {
     new(): IFront;
+    serialize(front: IFront): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[]};
     deserialize(data: string, dangers: IDanger[], cast: ICharacter[], portents: IPortent[]): IFront;
     defaults(): IFrontData;
 }
@@ -117,6 +119,7 @@ export interface ICampaignData extends IArchivable {
 
 export interface ICampaignStatic extends IStorable {
     new(): ICampaign
+    serialize(campaign: ICampaign): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[]}
     deserialize(data: string, fronts: IFront[], dangers: IDanger[], cast: ICharacter[], portents: IPortent[]): ICampaign;
     defaults(): ICampaignData
 }

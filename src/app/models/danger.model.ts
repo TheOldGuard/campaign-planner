@@ -46,6 +46,11 @@ export class Danger implements IDanger{
         return this;
     }
 
+    static serialize(danger: IDanger) {
+        let d = new Danger(danger.uuid).set({...<IDangerData>danger});
+        return d.serialize();
+    }
+
     serialize(): {data: IDangerSerialized, cast: ICharacter[], portents: IPortent[]} {
         let cast = this.cast;
         let portents = this.portents;
