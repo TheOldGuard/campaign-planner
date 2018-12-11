@@ -1,0 +1,64 @@
+.card-header {
+    background-color: #f7f7f7;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  
+    &.active, &:hover {
+      background-color: #eee;
+    }
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  
+  /* Style the accordion panel. Note: hidden by default */
+  .panel {
+    padding: 0 1em 0 1.5em;
+    background-color: white;
+    overflow: hidden;
+    max-height: 0px;
+    transition: max-height 0.4s ease-in-out;
+  
+    // &.show {
+    //   max-height: initial;
+    // }
+  }
+  
+  .card-header-title {
+    padding-left: 1.3em;
+  }
+  
+  .open-indicator {
+    font-size: 0.7em;
+    display: inline-block;
+    position: absolute;
+    left: 1.7em;
+    top: 1.7em;
+  
+    &.fa-chevron-down {
+      left: 1.5em;
+    }
+  }
+  .card-body {
+    position: relative;
+  
+    .edit-lock {
+      display: inline-block;
+      position: absolute;
+      left: -0.4em;
+      top: 0.4em;
+    }
+  }
+
+  .default {
+      color: #888;
+  }
+
+  .notes {
+      margin-left: 1em;
+  }

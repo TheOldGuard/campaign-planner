@@ -6,14 +6,20 @@ import { IPortent, IPortentData, IPortentStatic } from './interfaces.model';
 
 export interface IPortentSerialized extends IPortent { }
 
+const DEFAULTS: IPortentData = {
+    label: 'New portent',
+    passed: false,
+    archived: false
+};
+
 @staticImplements<IPortentStatic>()
 export class Portent implements IPortent {
     static key = 'portent';
 
     public uuid: string;
-    public label: string = '';
-    public passed: boolean = false;
-    public archived: boolean = false;
+    public label: string = DEFAULTS.label;
+    public passed: boolean = DEFAULTS.passed;
+    public archived: boolean = DEFAULTS.archived;
 
     constructor(id?:string) {
         this.uuid = id || uuid.fast();
@@ -41,5 +47,9 @@ export class Portent implements IPortent {
         let portent = new Portent(data.uuid);
         portent.set(data);
         return portent;
+    }
+
+    static defaults() {
+        return DEFAULTS;
     }
 }

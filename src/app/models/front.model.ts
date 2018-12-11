@@ -6,16 +6,23 @@ import { IFront, IFrontData, IFrontSerialized, IFrontStatic, IDanger, ICharacter
 import { IDangerSerialized } from './interfaces.model';
 import { dedupe } from '../util';
 
+const DEFAULTS: IFrontData = {
+    name: 'New Front',
+    type: 'adventure',
+    description: '...description',
+    dangers: []
+};
+
 @staticImplements<IFrontStatic>()
 export class Front implements IFront{
 
     static key = 'front';
 
     public uuid: string;
-    public name: string = 'New Front';
-    public type: string = '...type';
-    public description: string = '...description';
-    public dangers: IDanger[];
+    public name: string = DEFAULTS.name;
+    public type: string = DEFAULTS.type;
+    public description: string = DEFAULTS.description;
+    public dangers: IDanger[] = [];
     public archived = false;
 
     constructor(id?:string) {
@@ -33,7 +40,11 @@ export class Front implements IFront{
     }
 
     serialize(): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[]} {
-        let serializedDangers = this.dangers.map(d => d.serialize());
+        let serializedDangers = this.dangers.map(d => {
+            let serialized = d.serialize();
+            console.log('serialized dangers:',serialized);
+            return serialized;
+        });
         let dangers: IDangerSerialized[] = serializedDangers.map(d => d.data);
         let castArr = [].concat(...serializedDangers.map(d => d.cast));
         let cast = dedupe(castArr);
@@ -63,13 +74,17 @@ export class Front implements IFront{
         return front;
     }
 
+    static defaults(): IFrontData {
+        let def = {...DEFAULTS};
+        def.dangers = [];
+        return def;
+    }
+
     addDanger(danger: IDanger) {
         this.dangers.push(danger);
     }
 
     removeDanger(danger: IDanger) {
-        let before = this.dangers.length;
         this.dangers = this.dangers.filter(c => c.uuid !== danger.uuid);
-        return this.dangers.length !== before;
     }
 }

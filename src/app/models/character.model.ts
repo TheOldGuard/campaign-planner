@@ -6,17 +6,25 @@ import { ICharacter, ICharacterStatic, ICharacterData } from './interfaces.model
 
 interface ICharacterSerialized extends ICharacter{};
 
+const DEFAULTS: ICharacterData = {
+    name: 'New Character',
+    hint: '...hint',
+    description: '...description',
+    notes: '...notes',
+    archived: false
+}
+
 @staticImplements<ICharacterStatic>()
 export class Character implements ICharacter {
 
     static key = 'character';
 
     public uuid: string;
-    public name: string = 'New Character';
-    public hint: string = '...hint';
-    public description: string = '...description';
-    public notes: string = '...notes';
-    public archived = false;
+    public name: string = DEFAULTS.name;
+    public hint: string = DEFAULTS.hint;
+    public description: string = DEFAULTS.description;
+    public notes: string = DEFAULTS.notes;
+    public archived = DEFAULTS.archived;
 
     constructor(id?:string) {
         this.uuid = id || uuid.fast();
@@ -34,6 +42,10 @@ export class Character implements ICharacter {
 
     serialize(): string {
         return JSON.stringify(this);
+    }
+
+    static defaults() {
+        return DEFAULTS;
     }
 
     static deserialize(ser: string): Character {

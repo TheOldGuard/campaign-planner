@@ -4,6 +4,7 @@ import { DataService } from './data.service';
 import { ICampaign } from './models/interfaces.model';
 import { Campaign } from './models/campaign.model';
 import { ModalService } from './modal/modal.service';
+import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
 
 interface AppData {
   campaigns: ICampaign[];
@@ -34,6 +35,9 @@ export class AppComponent implements OnInit {
   constructor(private dataService: DataService, private modalService: ModalService) {
     this.data.campaigns = this.dataService.load();
     this.data.config.autosave = this.dataService.getValue('autosave');
+
+    // TEMPORARY
+    this.selectedCampaign = this.data.campaigns[0];
   }
 
   selectCampaign(campaign: ICampaign) {
@@ -64,13 +68,5 @@ export class AppComponent implements OnInit {
 
   onAutosaveChange() {
     this.dataService.setValue('autosave',this.data.config.autosave);
-  }
-
-  openModal() {
-    this.modalService.open('test-modal');
-  }
-
-  closeModal() {
-    this.modalService.close('test-modal');
   }
 }

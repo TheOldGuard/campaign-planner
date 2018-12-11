@@ -1,0 +1,143 @@
+.card-header {
+  background-color: #f7f7f7;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+
+  &.campaign-front {
+
+    background-color: #f9f4d2;
+
+    &.active {
+      background-color: #f9f4d2;
+    }
+
+    &:hover {
+      background-color: #f9f2c1;
+    }
+  }
+
+  &.active, &:hover {
+    background-color: #eee;
+  }
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 1em 0 1.5em;
+  background-color: white;
+  overflow: hidden;
+  max-height: 0px;
+  transition: max-height 0.4s ease-in-out;
+
+  // &.show {
+  //   max-height: initial;
+  // }
+}
+
+.card-header-title {
+  padding-left: 1.3em;
+}
+
+.open-indicator {
+  font-size: 0.7em;
+  display: inline-block;
+  position: absolute;
+  left: 1.7em;
+  top: 1.7em;
+
+  &.fa-chevron-down {
+    left: 1.5em;
+  }
+}
+.card-body {
+  position: relative;
+
+}
+
+.edit-lock {
+  display: inline-block;
+  position: absolute;
+  left: -0.4em;
+  top: 0.4em;
+  cursor: pointer;
+}
+
+.dangers {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  border-radius: 0.125em;
+  padding: 1em;
+
+  .header {
+    margin-left: 1.4em;
+  }
+
+  .edit-lock {
+    top: 1.1em;
+    left: 1em;
+  }
+
+  .list-controls {
+    padding-top: 1em;
+
+    button {
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+.dndList {
+    list-style: none;
+    padding: 0;
+
+    &.draggable .draggable-container, .dndPlaceholder {
+        position: relative;
+        box-sizing: border-box;
+        border: 1px solid lightblue;
+        padding: 18px;
+
+        i[dndHandle] {
+            position: absolute;
+            top: 1.4em;
+            left: 1em;
+            cursor: grab;
+
+            &:focus {
+                cursor: grabbing;
+            }
+        }
+
+        i.delete-button {
+            position: absolute;
+            top: 1.4em;
+            right: 1em;
+            cursor: pointer;
+        }
+
+        h5 {
+            padding-left: 1.3em;
+            margin: 0;
+        }
+    }
+}
+
+.footer {
+
+
+  button {
+    margin-left: 1em;
+  }
+
+  &.right {
+    text-align: right;
+  }
+}

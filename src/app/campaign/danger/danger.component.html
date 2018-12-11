@@ -1,0 +1,290 @@
+<div class="card">
+  <div class="card-header" id="header-{{danger.uuid}}" (click)='toggleOpen()'
+       [ngClass]="{'active':isOpen}">
+    <h5 class="mb-0">
+      <i class="fas open-indicator" [ngClass]="{'fa-chevron-right':!isOpen, 'fa-chevron-down':isOpen}"></i>
+        <span class="card-header-title">
+          {{danger.name}}
+        </span>
+    </h5>
+  </div>
+
+  <div id="content-{{danger.uuid}}" class="panel" #panel [ngClass]="{'collapsing':isCollapsing,'show':isOpen}">
+    <div class="card-body">
+      <i class="fas edit-lock" (click)='toggleEditing()' [ngClass]="{'fa-lock':!isEditing,'fa-lock-open':isEditing}"></i>
+
+      <!-- danger name -->
+      <h4 
+          class='editable'
+          *ngIf='!isEditing'>{{danger.name}}
+        </h4>
+      <h4
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="danger.name"
+          (focus)='onFieldFocus("name")'
+          (blur)='onFieldBlur("name")'
+          *ngIf='isEditing'
+      ></h4>
+
+      <!-- danger type -->
+      <div><strong>Type: </strong>
+        <span *ngIf='!isEditing'>{{danger.type}}</span>
+        <select [(ngModel)]='danger.type' *ngIf='isEditing'>
+          <option value="Ambitious Organization">Ambitious Organization</option>
+          <option value="Planar Force">Planar Force</option>
+          <option value="Arcane Enemy">Arcane Enemy</option>
+          <option value="Horde">Horde</option>
+          <option value="Cursed Place">Cursed Place</option>
+        </select>
+        <div class="og-tooltip" *ngIf='isEditing && danger.type'>
+          <i class="fas fa-info-circle"></i>
+          <div class="tooltiptext" style="width:50em; text-align:left">
+            {{danger.type}} Examples:
+            <ul *ngIf="danger.type === 'Ambitious Organization'">
+                <li>Misguided Good (impulse: to do what is “right” no matter the cost)</li>
+                <li>Thieves Guild (impulse: to take by subterfuge)</li>
+                <li>Cult (impulse: to infest from within)</li>
+                <li>Religious Organization (impulse: to establish and follow doctrine)</li>
+                <li>Corrupt Government (impulse: to maintain the status quo)</li>
+                <li>Cabal (impulse: to absorb those in power, to grow)</li>
+            </ul>
+            <ul *ngIf="danger.type === 'Planar Force'">
+                <li>God (impulse: to gather worshippers)</li>
+                <li>Demon Prince (impulse: to open the gates of Hell)</li>
+                <li>Elemental Lord (impulse: to tear down creation to its component parts)</li>
+                <li>Force of Chaos (impulse: to destroy all semblance of order)</li>
+                <li>Choir of Angels (impulse: to pass judgement)</li>
+                <li>Construct of Law (impulse: to eliminate perceived disorder)</li>
+            </ul>
+            <ul *ngIf="danger.type === 'Arcane Enemy'">
+                <li>Lord of the Undead (impulse: to seek true immortality)</li>
+                <li>Power-mad Wizard (impulse: to seek magical power)</li>
+                <li>Sentient Artifact (impulse: to find a worthy wielder)</li>
+                <li>Ancient Curse (impulse: to ensnare)</li>
+                <li>Chosen One (impulse: to fulfill or resent their destiny)</li>
+                <li>Dragon (impulse: to hoard gold and jewels, to protect the clutch)</li>
+            </ul>
+            <ul *ngIf="danger.type === 'Horde'">
+                <li>Wandering Barbarians (impulse: to grow strong, to drive their enemies before them)</li>
+                <li>Humanoid Vermin (impulse: to breed, to multiply and consume)</li>
+                <li>Underground Dwellers (impulse: to defend the complex from outsiders)</li>
+                <li>Plague of the Undead (impulse: to spread)</li>
+            </ul>
+            <ul *ngIf="danger.type === 'Cursed Place'">
+                <li>Abandoned Tower (impulse: to draw in the weak-willed)</li>
+                <li>Unholy Ground (impulse: to spawn evil)</li>
+                <li>Elemental Vortex (impulse: to grow, to tear apart reality)</li>
+                <li>Dark Portal (impulse: to disgorge demons)</li>
+                <li>Shadowland (impulse: to corrupt or consume the living)</li>
+                <li>Place of Power (impulse: to be controlled or tamed)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- danger impulse -->
+      <p 
+          class='editable'
+          *ngIf='!isEditing'><strong> Impulse:</strong> {{danger.impulse}}
+      </p>
+      <p *ngIf='isEditing' class='editable'>
+        <strong>Impulse:</strong> 
+        <span 
+            class='editable'
+            contenteditable="true"
+            [(ngModel)]="danger.impulse"
+            (focus)='onFieldFocus("impulse")'
+            (blur)='onFieldBlur("impulse")'
+        ></span>
+      </p>
+
+      <!-- danger impending doom -->
+      <p 
+          class='editable'
+          *ngIf='!isEditing'><strong>Impending Doom:</strong> {{danger.impendingDoom}}
+      </p>
+      <p *ngIf='isEditing' class='editable'>
+        <strong>Impending Doom:</strong> 
+        <span 
+            class='editable'
+            contenteditable="true"
+            [(ngModel)]="danger.impendingDoom"
+            (focus)='onFieldFocus("impendingDoom")'
+            (blur)='onFieldBlur("impendingDoom")'
+        ></span>
+      </p>
+
+      <!-- danger description -->
+      <p 
+          class='editable'
+          *ngIf='!isEditing'>{{danger.description}}
+      </p>
+      <p
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="danger.description"
+          (focus)='onFieldFocus("description")'
+          (blur)='onFieldBlur("description")'
+          *ngIf='isEditing'
+      ></p>
+
+      <!-- danger portents -->
+      <div class="portents">
+        <h5 *ngIf='!danger.portents || !danger.portents.length'>No portents yet!</h5>
+        <div class="portents-list" *ngIf='danger.portents && danger.portents.length && !isModifying'>
+          <og-portent-list [portents]='danger.portents'></og-portent-list>
+        </div>
+      </div>
+
+      <div class="characters">
+        <h6 class="header">Cast</h6>
+        <i class="fas edit-lock"
+           (click)="toggleModifyCharacters()"
+           [ngClass]="isModifyingCharacters ? 'fa-lock-open' : 'fa-lock'"></i>
+        <div *ngIf="!isModifyingCharacters">
+          <h6 *ngIf="!danger.cast || !danger.cast.length">No characters yet. Unlock this section and add some!</h6>
+          <og-character [character]="character" *ngFor="let character of danger.cast"></og-character>
+        </div>
+        <div *ngIf="isModifyingCharacters">
+
+        <ul
+          dndDropzone
+          dndEffectAllowed="copyMove"
+          (dndDrop)="onDrop($event, danger.cast)"
+          class="dndList"
+          [ngClass]="{'draggable':!disableDrag}"
+          *ngIf='!disableDrag'>
+
+            <li dndPlaceholderRef
+              class="dndPlaceholder">
+            </li>
+
+            <li class='draggable-container'
+              *ngFor="let character of danger.cast"
+              [dndDraggable]="character"
+              [dndEffectAllowed]="'copyMove'"
+              [dndDisableIf]="disableDrag"
+              (dndCopied)="onDragged(character, danger.cast, 'copy')"
+              (dndLinked)="onDragged(character, danger.cast, 'link')"
+              (dndMoved)="onDragged(character, danger.cast, 'move')"
+              (dndCanceled)="onDragged(character, danger.cast, 'none')"
+              (dndEnd)="onDragEnd($event)"
+            >
+              <i class="fas fa-bars" dndHandle ></i>
+              <h5>
+                {{character.name}} {{character.hint && !isDefaultHint(character) ? ' (' + character.hint + ')' : ''}}
+              </h5>
+              <i class="fas fa-trash-alt delete-button" (click)='onCharacterRemoveClick(character)'></i>
+            </li>
+        </ul>
+        </div>
+        <og-modal id="character-remove-{{danger.uuid}}" header="Remove character - {{characterToRemove?  characterToRemove.name : ''}}" *ngIf="danger">
+          <p>
+            Do you want to remove the character from this danger, or delete it entirely?
+            <span class="danger"> Note, if you remove it from everywhere, it can't be undone.</span>
+          </p>
+          <div class="footer right">
+            <button class="btn btn-success" (click)="onCharacterRemoveCancel()">Cancel</button>
+            <button class="btn btn-primary" (click)="onCharacterRemoveHere()">Danger</button>
+            <button class="btn btn-danger" (click)="onCharacterRemoveAll()">Everywhere!</button>
+          </div>
+        </og-modal>
+        <div class="list-controls" *ngIf="isModifyingCharacters">
+          <button class="btn" (click)="onAddCharacter()">Add Character</button>
+        </div>
+        <og-modal id="character-select-{{danger.uuid}}" header="Add a character" *ngIf="danger">
+          <p>Select an existing character below, or click New Character to add a new one.</p>
+          <p>Existing: 
+            <select [(ngModel)]="selectedCharacterToAdd">
+              <option value="{{i}}" *ngFor="let character of getFilteredCharacters(); index as i">
+                {{character.name}} {{character.hint && !isDefaultHint(character) ? ' (' + character.hint + ')' : ''}}
+              </option>
+            </select>
+          </p>
+          <div class="footer right">
+            <button class="btn btn-danger" (click)="onAddCharacterCancel()">Cancel</button>
+            <button class="btn btn-success" (click)="onAddCharacterNew()">New Character</button>
+            <button class="btn btn-primary" [ngClass]="selectedCharacterToAdd === undefined ? 'disabled' : ''" (click)="onAddCharacterSelect()">Add selected</button>
+          </div>
+        </og-modal>
+      </div>
+
+      <!-- danger moves -->
+      <div class="card card-body bg-light">
+        <h5>Moves {{danger.type ? '(' + danger.type + ')' : ''}}</h5>
+        <!-- ambitious organization -->
+        <ul *ngIf="danger.type=='Ambitious Organization'">
+          <li>Attack someone by stealthy means (kidnapping, etc.)</li>
+          <li>Attack someone directly (with a gang or single assailant)</li>
+          <li>Absorb or buy out someone important (an ally, perhaps)</li>
+          <li>Influence a powerful institution (change a law, manipulate doctrine)</li>
+          <li>Establish a new rule (within the organization)</li>
+          <li>Claim territory or resources</li>
+          <li>Negotiate a deal</li>
+          <li>Observe a potential foe in great detail</li>
+        </ul>
+
+        <!-- planar force -->
+        <ul *ngIf="danger.type=='Planar Force'">
+          <li>Turn an organization (corrupt or infiltrate with influence)</li>
+          <li>Give dreams of prophecy</li>
+          <li>Lay a Curse on a foe</li>
+          <li>Extract a promise in exchange for a boon</li>
+          <li>Attack indirectly, through intermediaries</li>
+          <li>Rarely, when the stars are right, attack directly</li>
+          <li>Foster rivalries with other, similar powers</li>
+          <li>Expose someone to a Truth, wanted or otherwise</li>
+        </ul>
+
+        <!-- arcane enemy -->
+        <ul *ngIf="danger.type=='Arcane Enemy'">
+          <li>Learn forbidden knowledge</li>
+          <li>Cast a spell over time and space</li>
+          <li>Attack a foe with magic, directly or otherwise</li>
+          <li>Spy on someone with a scrying spell</li>
+          <li>Recruit a follower or toady</li>
+          <li>Tempt someone with promises</li>
+          <li>Demand a sacrifice</li>
+        </ul>
+
+        <!-- horde -->
+        <ul *ngIf="danger.type=='Horde'">
+          <li>Assault a bastion of civilization</li>
+          <li>Embrace internal chaos</li>
+          <li>Change direction suddenly</li>
+          <li>Overwhelm a weaker force</li>
+          <li>Perform a show of dominance</li>
+          <li>Abandon an old home, find a new one</li>
+          <li>Grow in size by breeding or conquest</li>
+          <li>Appoint a champion</li>
+          <li>Declare war and act upon that declaration without hesitation or deliberation</li>
+        </ul>
+
+        <!-- cursed place -->
+        <ul *ngIf="danger.type=='Cursed Place'">
+          <li>Vomit forth a lesser monster</li>
+          <li>Spread to an adjacent place</li>
+          <li>Lure someone in</li>
+          <li>Grow in intensity or depth</li>
+          <li>Leave a lingering effect on an inhabitant or visitor</li>
+          <li>Hide something from sight</li>
+          <li>Offer power</li>
+          <li>Dampen magic or increase its effects</li>
+          <li>Confuse or obfuscate truth or direction</li>
+          <li>Corrupt a natural law</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--div class="row">
+  <div class="col-md-11">
+
+  </div>
+  <div class="col-md-1">
+    <i class="fas fa-pencil-alt" (click)='toggleEditing()'></i>
+  </div>
+</div-->

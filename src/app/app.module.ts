@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { ContenteditableModule } from 'ng-contenteditable';
+import { DndModule } from "ngx-drag-drop";
 
 import { AppComponent } from './app.component';
 import { FileComponent } from './file/file.component';
@@ -13,6 +14,10 @@ import { ConfigComponent } from './config/config.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { FrontComponent } from './campaign/front/front.component';
 import { ModalComponent } from './modal/modal.component';
+import { DangerComponent } from './campaign/danger/danger.component';
+import { PortentListComponent } from './campaign/danger/portent-list/portent-list.component';
+import { CharacterComponent } from './campaign/character/character.component';
+import { EntityDataChangeService } from './messaging.service';
 
 @NgModule({
   declarations: [
@@ -24,12 +29,16 @@ import { ModalComponent } from './modal/modal.component';
     ConfigComponent,
     CampaignComponent,
     FrontComponent,
-    ModalComponent
+    ModalComponent,
+    DangerComponent,
+    PortentListComponent,
+    CharacterComponent
   ],
   imports: [
     BrowserModule,
+    ContenteditableModule,
+    DndModule,
     FormsModule,
-    ContenteditableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

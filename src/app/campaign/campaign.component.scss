@@ -1,3 +1,70 @@
 .default {
     color: #888;
 }
+
+#accordion {
+    margin-top: 2em;
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+.campaign-data {
+    padding-left: 2em;
+}
+
+.button-container {
+    margin-top: 2em;
+
+    .btn {
+        border: 1px solid #ccc;
+        margin-right: 1em;
+    }
+}
+
+.edit-lock {
+    display: inline-block;
+    position: absolute;
+    left: 1em;
+    top: 0.6em;
+}
+
+.modal-footer.right {
+    text-align: right;
+}
+
+.dndList {
+    list-style: none;
+    padding: 0;
+
+    &.draggable .draggable-container, .dndPlaceholder {
+        position: relative;
+        box-sizing: border-box;
+        border: 1px solid lightblue;
+        padding: 18px;
+
+        i[dndHandle] {
+            position: absolute;
+            top: 1.4em;
+            left: 1em;
+            cursor: grab;
+
+            &:focus {
+                cursor: grabbing;
+            }
+        }
+
+        i.delete-button {
+            position: absolute;
+            top: 1.4em;
+            right: 1em;
+            cursor: pointer;
+        }
+
+        h5 {
+            padding-left: 1.3em;
+            margin: 0;
+        }
+    }
+}

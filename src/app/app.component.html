@@ -4,17 +4,17 @@
   (import)='onImport($event)'
   (save)='onSave()'
 ></og-config>
+
 <div class="row main">
   <div class="col-md-2 sidebar">
     <h4 class='campaign' *ngFor='let campaign of data.campaigns' (click)='selectCampaign(campaign)'>{{campaign.name}}</h4>
     <button class="btn btn-default" (click)='addCampaign()'><i class="fas fa-plus"></i></button>
   </div>
   <div class="col-md-10 content">
-    <button (click)='openModal()'>Open</button>
-    <og-modal id='test-modal' title='Oh snap!'>
-      <p>This is a modal.</p>
-      <button (click)='closeModal()'>Close it!</button>
-    </og-modal>
     <og-campaign [campaign]='selectedCampaign' *ngIf='selectedCampaign'></og-campaign>
+    <div *ngIf='!selectedCampaign'>
+      <h2>Welcome to The Old Guard Campaign Planner!</h2>
+      <p>To get started, either select a campaign on the left, or click the <i class="fas fa-plus"></i> button to add one.</p>
+    </div>
   </div>
 </div>

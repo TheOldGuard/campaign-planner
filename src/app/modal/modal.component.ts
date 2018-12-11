@@ -1,17 +1,10 @@
-import { Component, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
  
 import { ModalService } from './modal.service';
  
 @Component({
     selector: 'og-modal',
-    template: 
-        `<div class="og-modal">
-            <div class="og-modal-body">
-                <h3 class='og-modal-title'>{{title}}</h3>
-                <ng-content></ng-content>
-            </div>
-        </div>
-        <div class="og-modal-background"></div>`,
+    templateUrl: './modal.component.html',
     host: {
       '[style.display]': "'none'"
     },
@@ -20,13 +13,21 @@ import { ModalService } from './modal.service';
 })
  
 export class ModalComponent implements OnInit, OnDestroy {
-    @Input() title: string;
+    @Input() header: string;
+    private showClose:boolean = true;
 
     @Input() id: string;
     private element: any;
+
+    @Output('close')
+    private closeEmitter: EventEmitter<any> = new EventEmitter();
  
     constructor(private modalService: ModalService, private el: ElementRef) {
         this.element = el.nativeElement;
+
+        if (this.element.hasAttribute('no-x')) {
+          this.showClose = false;
+        }
     }
  
     ngOnInit(): void {
@@ -41,9 +42,10 @@ export class ModalComponent implements OnInit, OnDestroy {
         // move element to bottom of page (just before </body>) so it can be displayed above everything else
         document.body.appendChild(this.element);
  
+        let shouldClose = this.showClose;
         // close modal on background click
         this.element.addEventListener('click', function (e: any) {
-            if (e.target.className === 'og-modal') {
+            if (e.target.className === 'og-modal' && shouldClose) {
                 modal.close();
             }
         });
@@ -68,5 +70,6 @@ export class ModalComponent implements OnInit, OnDestroy {
     close(): void {
         this.element.style.display = 'none';
         document.body.classList.remove('og-modal-open');
+        this.closeEmitter.emit(true);
     }
 }

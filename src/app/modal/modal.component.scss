@@ -20,8 +20,26 @@
         border-radius: 0.5em;
 
         /* margin exposes part of the modal background */
-        margin: 10vw;
+        margin: 10vw 20vw;
 
+        .close-container {
+            text-align: right;
+
+            div {
+                width: 1em;
+                margin-left: auto;
+                margin-right: 0;
+                cursor: pointer;
+            }
+            
+        }
+
+        .og-modal-footer {
+
+            &.right {
+                text-align: right;
+            }
+        }
     }
 }
 
@@ -35,7 +53,7 @@
 
     /* semi-transparent black  */
     background-color: #000;
-    opacity: 0.75;
+    opacity: 0.5;
         
     /* z-index must be below .og-modal and above everything else  */
     z-index: 900;

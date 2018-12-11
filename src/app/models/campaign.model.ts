@@ -45,11 +45,13 @@ export class Campaign implements ICampaign{
     serialize(): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[]} {
         let serializedFronts = this.fronts.map(f => f.serialize());
         let fronts = serializedFronts.map(f => f.data);
-        let serializedDangers: IDangerSerialized[] = [].concat(...serializedFronts.map(f => f.dangers));
+        let serializedDangers: IDangerSerialized[] = [].concat(...serializedFronts.map(f => f.dangers),this.dangers.map(d => d.serialize().data));
         let dangers = dedupe(serializedDangers);
-        let castArr = [].concat(...serializedFronts.map(d => d.cast));
+        let castArr = [].concat(...serializedFronts.map(d => d.cast), ...this.characters);
         let cast = dedupe(castArr);
-        let portents = dedupe([].concat(...serializedFronts.map(d => d.portents)));
+        let allDangerPortents = this.dangers.map(d => d.serialize().portents);
+        let frontDangerPortents = serializedFronts.map(d => d.portents);
+        let portents = dedupe([].concat(...frontDangerPortents, ...allDangerPortents));
         let data = JSON.stringify({
             uuid: this.uuid,
             name: this.name,
@@ -91,6 +93,12 @@ export class Campaign implements ICampaign{
     removeDanger(danger: IDanger) {
         let before = this.dangers.length;
         this.dangers = this.dangers.filter(c => c.uuid !== danger.uuid);
-        return this.dangers.length !== before;
+        this.fronts.forEach(f => f.removeDanger(danger));
+    }
+
+    removeCharacter(character: ICharacter) {
+        let before = this.characters.length;
+        this.characters = this.characters.filter(c => c.uuid !== character.uuid);
+        this.dangers.forEach(d => d.removeCharacter(character));
     }
 }

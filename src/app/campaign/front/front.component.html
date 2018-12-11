@@ -1,3 +1,143 @@
-<p>
-  front works!
-</p>
+<div class="card">
+  <div class="card-header" id="header-{{front.uuid}}" (click)='toggleOpen()'
+       [ngClass]="{'active':isOpen,'campaign-front':front.type==='campaign'}">
+    <h5 class="mb-0">
+      <i class="fas open-indicator" [ngClass]="{'fa-chevron-right':!isOpen, 'fa-chevron-down':isOpen}"></i>
+        <span class="card-header-title">
+          {{front.name}}
+        </span>
+    </h5>
+  </div>
+
+  <div id="content-{{front.uuid}}" class="panel" #panel [ngClass]="{'collapsing':isCollapsing,'show':isOpen}">
+    <div class="card-body">
+      <i class="fas edit-lock" (click)='toggleEditing()' [ngClass]="{'fa-lock':!isEditing,'fa-lock-open':isEditing}"></i>
+
+      <!-- front name -->
+      <h4 
+          class='editable'
+          *ngIf='!isEditing'>{{front.name}}
+        </h4>
+      <h4
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="front.name"
+          (focus)='onFieldFocus("name")'
+          (blur)='onFieldBlur("name")'
+          *ngIf='isEditing'
+      ></h4>
+
+      <!-- front type -->
+      <div><strong> Type: </strong>
+        <span *ngIf='!isEditing' style="text-transform: capitalize">{{front.type}}</span>
+        <div class="og-tooltip" *ngIf="isEditing">
+          <i class="fas fa-info-circle"></i>
+          <span class="tooltiptext" style="width:28em">
+            Campaign fronts shape the main story of a campaign.
+            <br/>
+            Adventure fronts shape the story of a single adventure.
+          </span>
+        </div>
+        <select [(ngModel)]='front.type' *ngIf='isEditing'>
+          <option value="adventure">Adventure</option>
+          <option value="campaign">Campaign</option>
+        </select>
+      </div>
+
+      <!-- front description -->
+      <p 
+          class='editable'
+          *ngIf='!isEditing'>{{front.description}}
+      </p>
+      <p
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="front.description"
+          (focus)='onFieldFocus("description")'
+          (blur)='onFieldBlur("description")'
+          *ngIf='isEditing'
+      ></p>
+
+      <div class="dangers">
+        <h6 class="header">Dangers</h6>
+        <i class="fas edit-lock"
+           (click)="toggleModifying()"
+           [ngClass]="isModifying ? 'fa-lock-open' : 'fa-lock'"></i>
+        <div *ngIf="!isModifying">
+          <h6 *ngIf="!front.dangers || !front.dangers.length">There are no dangers yet. Unlock this section to add some!</h6>
+          <og-danger [danger]="danger" [characters]="characters" *ngFor="let danger of front.dangers"></og-danger>
+        </div>
+        <div *ngIf="isModifying">
+
+        <ul
+          dndDropzone
+          dndEffectAllowed="copyMove"
+          (dndDrop)="onDrop($event, front.dangers)"
+          class="dndList"
+          [ngClass]="{'draggable':!disableDrag}"
+          *ngIf='!disableDrag'>
+
+            <li dndPlaceholderRef
+              class="dndPlaceholder">
+            </li>
+
+            <li class='draggable-container'
+              *ngFor="let danger of front.dangers"
+              [dndDraggable]="danger"
+              [dndEffectAllowed]="'copyMove'"
+              [dndDisableIf]="disableDrag"
+              (dndCopied)="onDragged(danger, front.dangers, 'copy')"
+              (dndLinked)="onDragged(danger, front.dangers, 'link')"
+              (dndMoved)="onDragged(danger, front.dangers, 'move')"
+              (dndCanceled)="onDragged(danger, front.dangers, 'none')"
+              (dndEnd)="onDragEnd($event)"
+            >
+              <i class="fas fa-bars" dndHandle ></i>
+              <h5>
+                {{danger.name}}
+              </h5>
+              <i class="fas fa-trash-alt delete-button" (click)='onDangerRemoveClick(danger)'></i>
+            </li>
+        </ul>
+        </div>
+        <og-modal id="danger-remove-{{front.uuid}}" header="Remove danger - {{dangerToRemove?  dangerToRemove.name : ''}}">
+          <p>
+            Do you want to remove the danger from this front, or delete it entirely?
+            <span class="danger"> Note, if you remove it from everywhere, it can't be undone.</span>
+          </p>
+          <div class="footer right">
+            <button class="btn btn-success" (click)="onDangerRemoveCancel()">Cancel</button>
+            <button class="btn btn-primary" (click)="onDangerRemoveHere()">Front</button>
+            <button class="btn btn-danger" (click)="onDangerRemoveAll()">Everywhere!</button>
+          </div>
+        </og-modal>
+        <div class="list-controls" *ngIf="isModifying">
+          <button class="btn" (click)="onAddDanger()">Add Danger</button>
+        </div>
+        <og-modal id="danger-select-{{front.uuid}}" header="Add a danger">
+          <p>Select an existing danger below, or click "new danger" to add a new one.</p>
+          <p>Existing: 
+            <select [(ngModel)]="selectedDangerToAdd">
+              <option value="{{i}}" *ngFor="let danger of getFilteredDangers(); index as i">{{danger.name}}</option>
+            </select>
+          </p>
+          <div class="footer right">
+            <button class="btn btn-danger" (click)="onAddDangerCancel()">Cancel</button>
+            <button class="btn btn-success" (click)="onAddDangerNew()">New Danger</button>
+            <button class="btn btn-primary" [ngClass]="selectedDangerToAdd === undefined ? 'disabled' : ''" (click)="onAddDangerSelect()">Add selected</button>
+          </div>
+        </og-modal>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!--div class="row">
+  <div class="col-md-11">
+
+  </div>
+  <div class="col-md-1">
+    <i class="fas fa-pencil-alt" (click)='toggleEditing()'></i>
+  </div>
+</div-->

@@ -1,3 +1,23 @@
-<p>
-  modal works!
-</p>
+<div class="og-modal">
+  <div class="og-modal-body">
+    <div class="row" *ngIf='showClose'>
+      <div class="col-md-11">
+        <h3 class='og-modal-title'>{{header}}</h3>
+      </div>
+      <div class="col-md-1 close-container">
+        <div class="close" (click)='close()'>
+          <i class='fas fa-times'></i>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf='!showClose'>
+      <div class="col-md-12">
+        <h3 class='og-modal-title'>{{header}}</h3>
+      </div>
+    </div>
+    <h4 class='close-container' *ngIf='showClose'>
+    </h4>
+    <ng-content></ng-content>
+  </div>
+</div>
+<div class="og-modal-background"></div>

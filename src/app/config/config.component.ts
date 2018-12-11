@@ -27,12 +27,11 @@ export class ConfigComponent {
   constructor(private modalService: ModalService) { }
 
   toggle() {
-    this.open = !this.open;
-    if (this.open) {
-      this.modalService.open('config-modal');
-    } else {
-      this.modalService.close('config-modal');
-    }
+    this.modalService.open('config-modal');
+  }
+
+  closeModal() {
+    this.modalService.close('config-modal');
   }
 
   onAutosaveChange() {

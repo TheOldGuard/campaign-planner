@@ -1,0 +1,49 @@
+<h6>Grim Portents</h6>
+<i class="fas edit-toggle" (click)='toggleEdit()' [ngClass]="isEditing ? 'fa-lock-open' : 'fa-lock'"></i>
+<ul class='portent-list' *ngIf='!isModifying'>
+  <li *ngFor='let portent of portents' [ngClass]="{'passed': portent.passed, 'editing': isEditing}">
+    <input type="checkbox" [(ngModel)]='portent.passed'/>
+    <p class="label editable" *ngIf='!isEditing'>{{portent.label}}</p>
+    <p class="label editable" *ngIf='isEditing'
+          contenteditable="true"
+          [(ngModel)]="portent.label"
+          (focus)="onLabelFocus(portent)"
+          (blur)="onLabelBlur(portent)"
+    ></p>
+  </li>
+</ul>
+
+<ul
+  dndDropzone
+  dndEffectAllowed="copyMove"
+  (dndDrop)="onDrop($event, portents)"
+  class="dndList portent-list"
+  [ngClass]="{'draggable':isModifying}"
+  *ngIf='isModifying'>
+
+    <li dndPlaceholderRef
+      class="dndPlaceholder">
+    </li>
+
+    <li class='draggable-container'
+      *ngFor="let portent of portents"
+      [dndDraggable]="portent"
+      [dndEffectAllowed]="'copyMove'"
+      [dndDisableIf]="!isModifying"
+      (dndCopied)="onDragged(portent, portents, 'copy')"
+      (dndLinked)="onDragged(portent, portents, 'link')"
+      (dndMoved)="onDragged(portent, portents, 'move')"
+      (dndCanceled)="onDragged(portent, portents, 'none')"
+    >
+      <i class="fas fa-bars" dndHandle ></i>
+      <p class="label">
+        {{portent.label}}
+      </p>
+      <i class="fas fa-trash-alt delete-button" (click)='onDeletePortent(portent)'></i>
+    </li>
+</ul>
+
+<div class="portent-controls" *ngIf='isEditing'>
+  <button class="btn btn-success" (click)='addPortent()'>Add</button>
+  <button class="btn btn-primary" (click)='toggleModifyPortents()'>{{isModifyingPortents ? 'Confirm' : 'Modify'}}</button>
+</div>

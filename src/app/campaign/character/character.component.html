@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-header" id="header-{{character.uuid}}" (click)='toggleOpen()'
+       [ngClass]="{'active':isOpen}">
+    <h5 class="mb-0">
+      <i class="fas open-indicator" [ngClass]="{'fa-chevron-right':!isOpen, 'fa-chevron-down':isOpen}"></i>
+        <span class="card-header-title">
+          {{character.name}} {{character.hint && !isDefault('hint')? '(' + character.hint + ')' : ''}}
+        </span>
+    </h5>
+  </div>
+
+  <div id="content-{{character.uuid}}" class="panel" #panel [ngClass]="{'collapsing':isCollapsing,'show':isOpen}">
+    <div class="card-body">
+      <i class="fas edit-lock" (click)='toggleEditing()' [ngClass]="{'fa-lock':!isEditing,'fa-lock-open':isEditing}"></i>
+
+      <!-- character name -->
+      <h4 
+          class='editable'
+          *ngIf='!isEditing'>{{character.name}}
+        </h4>
+      <h4
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="character.name"
+          (focus)='onFieldFocus("name")'
+          (blur)='onFieldBlur("name")'
+          *ngIf='isEditing'
+      ></h4>
+
+      <!-- character hint -->
+      <p 
+          class='editable'
+          *ngIf='!isEditing'><strong> Hint: </strong>
+          <span [ngClass]="isDefault('hint') ? 'default' : ''">{{character.hint}}</span>
+      </p>
+      <p *ngIf='isEditing' class='editable'>
+        <strong>Hint:</strong> 
+        <span 
+            class='editable'
+            contenteditable="true"
+            [(ngModel)]="character.hint"
+            (focus)='onFieldFocus("hint")'
+            (blur)='onFieldBlur("hint")'
+        ></span>
+      </p>
+
+      <!-- character description -->
+      <p 
+          class='editable'
+          [ngClass]="isDefault('description') ? 'default' : ''"
+          *ngIf='!isEditing'>{{character.description}}
+      </p>
+      <p
+          class='editable'
+          contenteditable="true"
+          [(ngModel)]="character.description"
+          (focus)='onFieldFocus("description")'
+          (blur)='onFieldBlur("description")'
+          *ngIf='isEditing'
+      ></p>
+
+      <!-- character notes -->
+      <hr/>
+      <h6>Notes:</h6>
+      <p 
+          class='editable notes'
+          [ngClass]="isDefault('notes') ? 'default' : ''"
+          *ngIf='!isEditing'>{{character.notes}}
+      </p>
+      <p
+          class='editable notes'
+          contenteditable="true"
+          [(ngModel)]="character.notes"
+          (focus)='onFieldFocus("notes")'
+          (blur)='onFieldBlur("notes")'
+          *ngIf='isEditing'
+      ></p>
+
+    </div>
+  </div>
+</div>

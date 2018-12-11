@@ -75,6 +75,7 @@ export interface IDangerSerialized {
 }
 
 export interface IDanger extends IDangerData, IUniquelyIdentified, ISettable<IDangerData, IDanger> {
+    removeCharacter(character: ICharacter): void;
     serialize(): {data: IDangerSerialized, cast: ICharacter[], portents: IPortent[]}
 }
 
@@ -88,9 +89,11 @@ export interface IFrontData extends IArchivable {
 export interface IFrontStatic extends IStorable {
     new(): IFront;
     deserialize(data: string, dangers: IDanger[], cast: ICharacter[], portents: IPortent[]): IFront;
+    defaults(): IFrontData;
 }
 
 export interface IFront extends IFrontData, IUniquelyIdentified, ISettable<IFrontData, IFront> {
+    removeDanger(danger: IDanger): void;
     serialize(): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[]}
 }
 
@@ -119,6 +122,8 @@ export interface ICampaignStatic extends IStorable {
 }
 
 export interface ICampaign extends ICampaignData, IUniquelyIdentified, ISettable<ICampaignData, ICampaign> {
+    removeDanger(danger: IDanger): void;
+    removeCharacter(character: ICharacter): void;
     serialize(): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[]}
 }
 

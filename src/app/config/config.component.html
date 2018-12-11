@@ -1,6 +1,8 @@
-<div class="config" [ngClass]="{'open': open}">
+<div class="toggle" (click)="toggle()">
+  <i class="fas fa-cog"></i>
+</div>
+<og-modal id='config-modal' header='Configuration' no-x>
   <div class="options">
-
     <div class="form-control">
       <og-file [campaigns]='data.campaigns'
                (import)='onImport($event)'
@@ -12,9 +14,8 @@
         *ngIf='data && data.config'
         [(ngModel)]='data.config.autosave' label='Autosave' (change)='onAutosaveChange()' round='true'></og-toggle>
     </div>
-
   </div>
-  <div class="toggle" (click)="toggle()">
-    <i class="fas fa-cog"></i>
+  <div class="modal-footer right">
+    <button class="btn btn-primary" (click)='closeModal()'>Close</button>
   </div>
-</div>
+</og-modal>

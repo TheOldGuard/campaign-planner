@@ -3,7 +3,16 @@ import { UuidService as uuid } from '../uuid.service';
 import { staticImplements } from '../decorators/staticImplements.decorator';
 
 import { IDanger, IDangerData, IDangerSerialized, ICharacter, IPortent, IDangerStatic } from './interfaces.model';
-import { ThrowStmt } from '@angular/compiler';
+
+const DEFAULTS: IDangerData = {
+    name: 'New Danger',
+    type: 'Ambitious Organization',
+    impulse: '...impulse',
+    description: '...description',
+    impendingDoom: '...impending doom',
+    cast: [],
+    portents: []
+};
 
 @staticImplements<IDangerStatic>()
 export class Danger implements IDanger{
@@ -11,13 +20,13 @@ export class Danger implements IDanger{
     static key = 'danger';
 
     public uuid: string;
-    public name: string = 'New Danger';
-    public type: string = '...type';
-    public impulse: string = '...impulse';
-    public description: string = '...description';
+    public name: string = DEFAULTS.name;
+    public type: string = DEFAULTS.type;
+    public impulse: string = DEFAULTS.impulse;
+    public description: string = DEFAULTS.description;
     public cast: ICharacter[] = [];
     public portents: IPortent[] = [];
-    public impendingDoom: string = '...impendingDoom';
+    public impendingDoom: string = DEFAULTS.impendingDoom;
     public archived = false;
 
     constructor(id?:string) {
@@ -52,6 +61,13 @@ export class Danger implements IDanger{
             archived: this.archived
         };
         return {data: data, cast: cast, portents: portents};
+    }
+
+    static defaults(): IDangerData {
+        let def = {...DEFAULTS};
+        def.cast = [];
+        def.portents = [];
+        return def;
     }
 
     static deserialize(ser: string, characters: ICharacter[], allPortents: IPortent[]): Danger {

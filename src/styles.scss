@@ -12,3 +12,41 @@ body.og-modal-open {
     /* body overflow is hidden to hide main scrollbar when modal window is open */
     // overflow: hidden;
 }
+
+.editable {
+
+    border: 1px solid white;
+
+    &[contenteditable] {
+        border: 1px solid lightblue;
+    }
+}
+
+.og-tooltip {
+  position: relative;
+  display: inline-block;
+  color: #333;
+}
+
+/* Tooltip text */
+.og-tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  width: auto;
+  max-width: 60vw;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  left: 100%;
+  top: 0;
+  z-index: 100000;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.og-tooltip:hover .tooltiptext {
+  visibility: visible;
+}
