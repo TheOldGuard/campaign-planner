@@ -2,7 +2,7 @@ import { UuidService as uuid } from '../uuid.service';
 
 import { staticImplements } from '../decorators/staticImplements.decorator';
 
-import { IFront, IFrontData, IFrontSerialized, IFrontStatic, IDanger, ICharacter, IPortent } from './interfaces.model';
+import { IFront, IFrontData, IFrontSerialized, IFrontStatic, IDanger, ICharacter, IPortent, IStake } from './interfaces.model';
 import { IDangerSerialized } from './interfaces.model';
 import { dedupe } from '../util';
 import { Danger } from './danger.model';
@@ -40,12 +40,13 @@ export class Front implements IFront{
         return this;
     }
 
-    serialize(): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[]} {
+    serialize(): {data: IFrontSerialized, dangers: IDangerSerialized[], cast: ICharacter[], portents: IPortent[], stakes: IStake[]} {
         let serializedDangers = this.dangers.map(d => {
             let serialized = Danger.serialize(d);
             return serialized;
         });
         let dangers: IDangerSerialized[] = serializedDangers.map(d => d.data);
+        let stakes: IStake[] = [].concat(...serializedDangers.map(d => d.stakes));
         let castArr = [].concat(...serializedDangers.map(d => d.cast));
         let cast = dedupe(castArr);
         let portents = dedupe([].concat(...serializedDangers.map(d => d.portents)));
@@ -61,7 +62,8 @@ export class Front implements IFront{
             data: data,
             dangers: dangers,
             cast: cast,
-            portents: portents
+            portents: portents,
+            stakes: stakes
         };
     }
 

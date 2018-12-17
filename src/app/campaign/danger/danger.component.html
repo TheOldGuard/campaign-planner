@@ -136,6 +136,13 @@
         </div>
       </div>
 
+      <!-- danger stakes -->
+      <div class="portents">
+        <div class="stakes-list" *ngIf='danger.stakes'>
+          <og-stakes-list [stakes]='danger.stakes'></og-stakes-list>
+        </div>
+      </div>
+
       <div class="characters">
         <h6 class="header">Cast</h6>
         <i class="fas edit-lock"

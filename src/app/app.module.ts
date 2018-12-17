@@ -18,6 +18,7 @@ import { DangerComponent } from './campaign/danger/danger.component';
 import { PortentListComponent } from './campaign/danger/portent-list/portent-list.component';
 import { CharacterComponent } from './campaign/character/character.component';
 import { EntityDataChangeService } from './messaging.service';
+import { StakesListComponent } from './campaign/stakes-list/stakes-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EntityDataChangeService } from './messaging.service';
     ModalComponent,
     DangerComponent,
     PortentListComponent,
-    CharacterComponent
+    CharacterComponent,
+    StakesListComponent
   ],
   imports: [
     BrowserModule,

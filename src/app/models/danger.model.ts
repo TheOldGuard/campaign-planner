@@ -2,7 +2,7 @@ import { UuidService as uuid } from '../uuid.service';
 
 import { staticImplements } from '../decorators/staticImplements.decorator';
 
-import { IDanger, IDangerData, IDangerSerialized, ICharacter, IPortent, IDangerStatic } from './interfaces.model';
+import { IStake, IDanger, IDangerData, IDangerSerialized, ICharacter, IPortent, IDangerStatic } from './interfaces.model';
 
 const DEFAULTS: IDangerData = {
     name: 'New Danger',
@@ -11,7 +11,8 @@ const DEFAULTS: IDangerData = {
     description: '...description',
     impendingDoom: '...impending doom',
     cast: [],
-    portents: []
+    portents: [],
+    stakes: []
 };
 
 @staticImplements<IDangerStatic>()
@@ -26,6 +27,7 @@ export class Danger implements IDanger{
     public description: string = DEFAULTS.description;
     public cast: ICharacter[] = [];
     public portents: IPortent[] = [];
+    public stakes: IStake[] = [];
     public impendingDoom: string = DEFAULTS.impendingDoom;
     public archived = false;
 
@@ -40,6 +42,7 @@ export class Danger implements IDanger{
         this.description = data.description;
         this.cast = data.cast;
         this.portents = data.portents;
+        this.stakes = data.stakes;
         this.impendingDoom = data.impendingDoom;
         this.archived = data.archived;
 
@@ -51,9 +54,7 @@ export class Danger implements IDanger{
         return d.serialize();
     }
 
-    serialize(): {data: IDangerSerialized, cast: ICharacter[], portents: IPortent[]} {
-        let cast = this.cast;
-        let portents = this.portents;
+    serialize(): {data: IDangerSerialized, cast: ICharacter[], portents: IPortent[], stakes: IStake[]} {
         let data = {
             uuid: this.uuid,
             name: this.name,
@@ -62,10 +63,11 @@ export class Danger implements IDanger{
             description: this.description,
             impendingDoom: this.impendingDoom,
             cast: this.cast.map(c => c.uuid),
+            stakes: this.stakes.map(s => s.uuid),
             portents: this.portents.map(p => p.uuid),
             archived: this.archived
         };
-        return {data: data, cast: cast, portents: portents};
+        return {data: data, cast: this.cast, portents: this.portents, stakes: this.stakes};
     }
 
     static defaults(): IDangerData {
@@ -75,14 +77,13 @@ export class Danger implements IDanger{
         return def;
     }
 
-    static deserialize(ser: string, characters: ICharacter[], allPortents: IPortent[]): Danger {
+    static deserialize(ser: string, characters: ICharacter[], allPortents: IPortent[], allStakes: IStake[]): Danger {
         let data: IDangerSerialized = JSON.parse(ser);
-        let danger = new Danger(data.uuid);
         let cast = characters.filter(c => data.cast.indexOf(c.uuid) > -1);
         let portents = allPortents.filter(p => data.portents.indexOf(p.uuid) > -1);
-        let deserialized: IDangerData = <IDangerData>{...data, cast: cast, portents: portents};
-        danger.set(deserialized);
-        return danger;
+        let stakes = allStakes.filter(s => data.stakes.indexOf(s.uuid) > -1);
+        let deserialized: IDangerData = <IDangerData>{...data, cast: cast, portents: portents, stakes: stakes};
+        return new Danger(data.uuid).set(deserialized);
     }
 
     addCharacter(char: ICharacter) {

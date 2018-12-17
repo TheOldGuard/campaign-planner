@@ -1,0 +1,58 @@
+<h6>Stakes</h6>
+<i class="fas edit-toggle" (click)='toggleEdit()' [ngClass]="isEditing ? 'fa-lock-open' : 'fa-lock'"></i>
+<ul class='stake-list' *ngIf='!isModifying'>
+  <li *ngIf='!stakes || !stakes.length'>
+    <h6>There are no stakes yet. Unlock this section to add some!</h6>
+  </li>
+  <li *ngFor='let stake of stakes' [ngClass]="{'editing': isEditing}">
+    <p class="label editable" *ngIf='!isEditing'><i class="fas fa-circle bullet"></i> {{stake.question}}</p>
+    <p class="label editable" *ngIf='isEditing'
+          contenteditable="true"
+          [(ngModel)]="stake.question"
+          (focus)="onLabelFocus(stake)"
+          (blur)="onLabelBlur(stake)"
+    ></p>
+  </li>
+</ul>
+
+<ul
+  dndDropzone
+  dndEffectAllowed="copyMove"
+  (dndDrop)="onDrop($event, stakes)"
+  class="dndList stake-list"
+  [ngClass]="{'draggable':isModifying}"
+  *ngIf='isModifying'>
+
+    <li dndPlaceholderRef
+      class="dndPlaceholder">
+    </li>
+
+    <li class='draggable-container'
+      *ngFor="let stake of stakes"
+      [dndDraggable]="stake"
+      [dndEffectAllowed]="'copyMove'"
+      [dndDisableIf]="!isModifying"
+      (dndCopied)="onDragged(stake, stakes, 'copy')"
+      (dndLinked)="onDragged(stake, stakes, 'link')"
+      (dndMoved)="onDragged(stake, stakes, 'move')"
+      (dndCanceled)="onDragged(stake, stakes, 'none')"
+    >
+      <i class="fas fa-bars" dndHandle ></i>
+      <p class="label">
+        {{stake.question}}
+      </p>
+      <i class="fas fa-trash-alt delete-button" (click)='onDeleteStake(stake)'></i>
+    </li>
+</ul>
+<og-modal id="stake-delete-{{uuid}}" header="Delete stake - {{ stakeToDelete ? stakeToDelete.question : ''}}" (close)="onDeleteStakeClose()">
+  Are you sure you want to delete this stakes question? There is no going back!
+  <div class="footer right">
+    <button class="btn btn-success" (click)="onDeleteStakeCancel()">Cancel</button>
+    <button class="btn btn-danger" (click)="onDeleteStakeConfirm()">Yes</button>
+  </div>
+</og-modal>
+
+<div class="stake-controls" *ngIf='isEditing'>
+  <button class="btn btn-success" (click)='addStake()'>Add</button>
+  <button class="btn btn-primary" (click)='toggleModifyStakes()'>{{isModifyingStakes ? 'Confirm' : 'Modify'}}</button>
+</div>

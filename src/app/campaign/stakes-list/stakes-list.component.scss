@@ -1,0 +1,103 @@
+.stake-list {
+    list-style: none;
+    padding: 0;
+
+    li {
+        box-sizing: border-box;
+        position: relative;
+        border-top: 1px solid white;
+        border-bottom: 1px solid #eeee;
+        padding: 17px 18px 17px 17px;
+
+        &:last-child {
+            border: none;
+        }
+
+        &.passed {
+            text-decoration: line-through;
+
+            &.editing {
+                text-decoration: none;
+            }
+        }
+
+        input[type="checkbox"] {
+            position: absolute;
+            left: 1em;
+            top: 1.4em;
+        }
+
+        .label {
+            padding: 0;
+            margin: 0;
+            margin-left: 1.3em;
+        }
+
+        p {
+            position: relative;
+
+            .bullet {
+                font-size: 0.5em;
+                position: absolute;
+                top: 0.6em;
+                left: -2em;
+            }
+        }
+    }
+}
+
+.dndList {
+    list-style: none;
+    padding: 0;
+
+    &.draggable .draggable-container, .dndPlaceholder {
+        position: relative;
+        box-sizing: border-box;
+        // border: 1px solid light-blue;
+        padding: 18px;
+
+        i[dndHandle] {
+            position: absolute;
+            top: 1.4em;
+            left: 1em;
+            cursor: grab;
+
+            &:focus {
+                cursor: grabbing;
+            }
+        }
+
+        i.delete-button {
+            position: absolute;
+            top: 1.4em;
+            right: 1em;
+            cursor: pointer;
+        }
+
+        p {
+            padding: 0;
+            padding-left: 1.3em;
+            margin: 0;
+        }
+    }
+}
+
+.stake-controls {
+    border-top: 1px solid #eee;
+    padding-top: 1em;
+
+    button {
+        margin-right: 1em;
+    }
+}
+
+.footer {
+
+  button {
+    margin-left: 1em;
+  }
+
+  &.right {
+    text-align: right;
+  }
+}

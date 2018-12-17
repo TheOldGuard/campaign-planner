@@ -7,6 +7,7 @@ import { Front } from './models/front.model';
 import { Campaign } from './models/campaign.model';
 import { IStorable, ICampaign } from './models/interfaces.model';
 import { PersistenceException } from './models/exceptions/persistence-exception.error';
+import { Stake } from './models/stake.model';
 
 const PREFIX = 'og_planner';
 
@@ -72,6 +73,9 @@ export class DataService {
     let campaignsSerialized = campaigns.map(c => Campaign.serialize(c));
     let campaignJSON = JSON.stringify([].concat(...campaignsSerialized.map(c => c.data)));
 
+    let stakesSerialized = [].concat(...campaignsSerialized.map(c => c.stakes));
+    let stakesJSON = JSON.stringify(stakesSerialized.map(s => JSON.stringify(s)));
+
     let frontsSerialized = [].concat(...campaignsSerialized.map(c => c.fronts));
     let frontJSON = JSON.stringify(frontsSerialized.map(f => JSON.stringify(f)));
 
@@ -92,6 +96,7 @@ export class DataService {
       localStorage.setItem(this.buildKey(Danger), dangerJSON);
       localStorage.setItem(this.buildKey(Portent), portentJSON);
       localStorage.setItem(this.buildKey(Character), characterJSON);
+      localStorage.setItem(this.buildKey(Stake), stakesJSON);
     }
 
     return {
@@ -99,7 +104,8 @@ export class DataService {
       fronts: frontJSON,
       dangers: dangerJSON,
       portents: portentJSON,
-      characters: characterJSON
+      characters: characterJSON,
+      stakes: stakesJSON
     };
   }
 
@@ -136,6 +142,11 @@ export class DataService {
       ? JSON.parse(fetchedCharacters).map(c => Character.deserialize(c))
       : [];
 
+    let fetchedStakes = fetch(Stake);
+    let stakes = fetchedStakes
+      ? JSON.parse(fetchedStakes).map(s => Stake.deserialize(s))
+      : [];
+
     let fetchedPortents = fetch(Portent);
     let portents = fetchedPortents
       ? JSON.parse(fetchedPortents).map(p => Portent.deserialize(p))
@@ -143,7 +154,7 @@ export class DataService {
 
     let fetchedDangers = fetch(Danger);
     let dangers = fetchedDangers
-      ? JSON.parse(fetchedDangers).map(d => Danger.deserialize(d, characters, portents))
+      ? JSON.parse(fetchedDangers).map(d => Danger.deserialize(d, characters, portents, stakes))
       : [];
 
     let fetchedFronts = fetch(Front);
@@ -215,6 +226,22 @@ function debugService() {
     passed: false
   });
 
+  let stake1 = new Stake().set({
+    question: 'what is your name?'
+  });
+
+  let stake2 = new Stake().set({
+    question: 'what is your quest?'
+  });
+
+  let stake3 = new Stake().set({
+    question: 'what is your favorite color?'
+  });
+
+  let stake4 = new Stake().set({
+    question: 'what is the airspeed of an unladen swallow?'
+  });
+
   let dan1 = new Danger().set({
     name: 'a danger name',
     description: 'a danger description',
@@ -222,6 +249,7 @@ function debugService() {
     impulse: 'a danger impulse',
     cast: [char1],
     portents: [port1,port2],
+    stakes: [stake1, stake2],
     impendingDoom: 'a danger doom'
   });
 
@@ -232,6 +260,7 @@ function debugService() {
     impulse: 'b danger impulse',
     cast: [char2, char3],
     portents: [port3],
+    stakes: [stake3, stake4],
     impendingDoom: 'b danger doom'
   });
 
@@ -242,6 +271,7 @@ function debugService() {
     impulse: 'c danger impulse',
     cast: [char4],
     portents: [port4,port5],
+    stakes: [stake2, stake3],
     impendingDoom: 'c danger doom'
   });
 

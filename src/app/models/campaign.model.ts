@@ -48,16 +48,19 @@ export class Campaign implements ICampaign{
         return camp.serialize();
     }
 
-    serialize(): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[]} {
+    serialize(): {data: string, fronts: IFrontSerialized[], dangers: IDangerSerialized[], cast: string[], portents: string[], stakes: string[]} {
         let serializedFronts = this.fronts.map(f => Front.serialize(f));
         let fronts = serializedFronts.map(f => f.data);
         let serializedDangers: IDangerSerialized[] = [].concat(...serializedFronts.map(f => f.dangers),this.dangers.map(d => d.serialize().data));
         let dangers = dedupe(serializedDangers);
         let castArr = [].concat(...serializedFronts.map(d => d.cast), ...this.characters);
         let cast = dedupe(castArr);
-        let allDangerPortents = this.dangers.map(d => d.serialize().portents);
+        let allDangersSerialized = this.dangers.map(d => d.serialize());
+        let allDangerPortents = allDangersSerialized.map(d => d.portents);
+        let allDangerStakes = allDangersSerialized.map(d => d.stakes);
         let frontDangerPortents = serializedFronts.map(d => d.portents);
         let portents = dedupe([].concat(...frontDangerPortents, ...allDangerPortents));
+        let stakes = dedupe([].concat(...allDangerStakes));
         let data = JSON.stringify({
             uuid: this.uuid,
             name: this.name,
@@ -72,7 +75,8 @@ export class Campaign implements ICampaign{
             fronts: fronts,
             dangers: dangers,
             cast: cast,
-            portents: portents
+            portents: portents,
+            stakes: stakes
         };
     }
 

@@ -1,19 +1,19 @@
 import { Component, Input } from '@angular/core';
-import { IPortent } from 'src/app/models/interfaces.model';
-import { Portent } from 'src/app/models/portent.model';
+import { IStake } from 'src/app/models/interfaces.model';
+import { Stake } from 'src/app/models/stake.model';
 import { DropEffect, DndDropEvent } from 'ngx-drag-drop';
 import { UuidService as uuid } from 'src/app/uuid.service';
 import { ModalService } from 'src/app/modal/modal.service';
 
 @Component({
-  selector: 'og-portent-list',
-  templateUrl: './portent-list.component.html',
-  styleUrls: ['./portent-list.component.scss']
+  selector: 'og-stakes-list',
+  templateUrl: './stakes-list.component.html',
+  styleUrls: ['./stakes-list.component.scss']
 })
-export class PortentListComponent {
+export class StakesListComponent {
 
   @Input()
-  portents: IPortent[];
+  stakes: IStake[];
 
   uuid = uuid.fast();
 
@@ -21,7 +21,7 @@ export class PortentListComponent {
 
   isEditing: boolean = false;
 
-  portentToDelete: IPortent;
+  stakeToDelete: IStake;
 
   constructor(private modalService: ModalService) { }
 
@@ -30,48 +30,48 @@ export class PortentListComponent {
     this.isModifying = false;
   }
 
-  toggleModifyPortents() {
+  toggleModifyStakes() {
     this.isModifying = !this.isModifying;
   }
 
-  addPortent() {
-    let p = new Portent();
-    this.portents.push(p);
+  addStake() {
+    let p = new Stake();
+    this.stakes.push(p);
   }
 
-  onLabelFocus(portent: IPortent) {
-    if (portent.label === Portent.defaults().label) {
-      portent.label = '';
+  onLabelFocus(stake: IStake) {
+    if (stake.question === Stake.defaults().question) {
+      stake.question = '';
     }
   }
 
-  onLabelBlur(portent: IPortent) {
-    if (!portent.label) {
-      portent.label = Portent.defaults().label;
+  onLabelBlur(stake: IStake) {
+    if (!stake.question) {
+      stake.question = Stake.defaults().question;
     }
   }
 
   buildModalId() {
-    return 'portent-delete-' + this.uuid;
+    return 'stake-delete-' + this.uuid;
   }
 
-  onDeletePortent(portent: IPortent) {
-    this.portentToDelete = portent;
+  onDeleteStake(stake: IStake) {
+    this.stakeToDelete = stake;
     this.modalService.open(this.buildModalId());
   }
 
-  onDeletePortentCancel() {
-    this.portentToDelete = undefined;
+  onDeleteStakeCancel() {
+    this.stakeToDelete = undefined;
     this.modalService.close(this.buildModalId());
   }
 
-  onDeletePortentConfirm() {
-    this.portents = this.portents.filter(p => p !== this.portentToDelete);
-    this.onDeletePortentCancel();
+  onDeleteStakeConfirm() {
+    this.stakes = this.stakes.filter(p => p !== this.stakeToDelete);
+    this.onDeleteStakeCancel();
   }
 
-  onDeletePortentClose() {
-    this.portentToDelete = undefined;
+  onDeleteStakeClose() {
+    this.stakeToDelete = undefined;
   }
 
   // ---------- DRAG AND DROP HANDLERS --------------
@@ -98,3 +98,4 @@ export class PortentListComponent {
     }
   }
 }
+
